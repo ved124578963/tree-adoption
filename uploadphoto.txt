@@ -1,0 +1,41 @@
+import { useState, useEffect } from "react";
+
+const UploadPhoto = ({ onCapture }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    // Check if user data exists in localStorage
+    const user = localStorage.getItem("user");
+    if (user) {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  const handleCapture = (event) => {
+    const file = event.target.files[0]; 
+    if (file) {
+      onCapture(file); // Pass captured image to parent component
+    }
+  };
+
+  if (!isAuthenticated) {
+    return null; // Don't render anything if the user is not authenticated
+  }
+
+  return (
+    <div className="flex flex-col items-center">
+      <label className="bg-green-600 text-white px-4 py-2 rounded-md cursor-pointer hover:bg-green-700">
+        Capture Photo
+        <input 
+          type="file" 
+          accept="image/*" 
+          capture="environment" 
+          className="hidden" 
+          onChange={handleCapture} 
+        />
+      </label>
+    </div>
+  );
+};
+
+export default UploadPhoto;
