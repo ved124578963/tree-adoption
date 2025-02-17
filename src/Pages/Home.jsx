@@ -1,5 +1,4 @@
 import React from 'react'
-import UploadPhoto from '../Components/UploadPhoto'
 import Hero from '../Components/Hero'
 import Features from '../Components/Features'
 export const Home = () => {
@@ -7,7 +6,6 @@ export const Home = () => {
     <div>
         <Hero/>
         <Features/>
-        <UploadPhoto/>
     </div>
   )
 }

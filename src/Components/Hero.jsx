@@ -2,6 +2,25 @@ import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user")); // Check if user is logged in
+
+  const handleRegisterTree = () => {
+    if (user) {
+      navigate("/Registertree");
+    } else {
+      alert("You must be logged in to Donate a tree.");
+      navigate("/login");
+    }
+  };
+  const handleDonaterTree = () => {
+    if (user) {
+      navigate("/Donatetree");
+    } else {
+      alert("You must be logged in to register a tree.");
+      navigate("/login");
+    }
+  };
+
   return (
     <section className="relative bg-green-100 py-20 text-center">
       <div className="max-w-4xl mx-auto px-6">
@@ -12,12 +31,15 @@ const Hero = () => {
           Join our mission to create a greener planet by adopting and tracking the growth of your own tree.
         </p>
         <div className="flex flex-col items-center space-y-4 mt-6">
-          <button className="px-6 py-3 bg-green-600 text-white text-lg font-semibold rounded-lg shadow-md hover:bg-green-700 transition">
-            Adopt a Tree
+          <button 
+            onClick={handleRegisterTree} 
+            className="px-6 py-3 bg-green-600 text-white text-lg font-semibold rounded-lg shadow-md hover:bg-green-700 transition"
+          >
+            Register a Tree
           </button>
           <button
-            onClick={() => navigate("/Donatetree")}
-            className="px-6 py-3 bg-yellow-500 text-white text-lg font-semibold rounded-lg shadow-md hover:bg-yellow-600 transition"
+            onClick={handleDonaterTree}
+            className="px-6 py-3 bg-blue-500 text-white text-lg font-semibold rounded-lg shadow-md hover:bg-blue-600 transition"
           >
             Donate a Tree 🌱
           </button>

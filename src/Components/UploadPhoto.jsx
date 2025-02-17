@@ -99,7 +99,10 @@ const UploadPhoto = () => {
                     ...fileData,
                 ]);
                 setGeneratedContent(content);
-                console.log(content.response.text());
+                const response = content.response.text(); // Get the raw text response
+                const jsonData = JSON.parse(response); // Parse the text into JSON
+                console.log(jsonData, typeof jsonData); // Now you have it in JSON format
+                console.log(jsonData[0]);
             };
             reader.readAsDataURL(file);
         }

@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import { FaRegEyeSlash, FaEye } from "react-icons/fa";
 
 const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -14,7 +16,7 @@ const Login = () => {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        setError(""); // Clear previous errors
+        setError("");
 
         try {
             const response = await axios.post(
@@ -26,12 +28,16 @@ const Login = () => {
             );
 
             if (response.status === 200) {
-                localStorage.setItem("user", JSON.stringify(response.data)); // Store user session
-                navigate("/"); // Redirect to Home Page
+                localStorage.setItem("user", JSON.stringify(response.data));
+                navigate("/");
             }
         } catch (err) {
             setError("Invalid username or password");
         }
+    };
+
+    const togglePasswordVisibility = () => {
+        setIsPasswordVisible((prevState) => !prevState);
     };
 
     return (
@@ -56,19 +62,33 @@ const Login = () => {
                         />
                     </div>
 
-                    <div className="mb-2">
+                    <div className="mb-4 relative">
                         <label className="block text-gray-700">Password</label>
-                        <input
-                            type="password"
-                            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-500"
-                            placeholder="Enter password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
+                        <div className="relative">
+                            <input
+                                type={isPasswordVisible ? "text" : "password"}
+                                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-500 pr-10"
+                                placeholder="Enter password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                            <button
+                                type="button"
+                                className="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500"
+                                onClick={togglePasswordVisibility}
+                                tabIndex={-1}
+                                style={{ height: '100%' }} // Ensures the button spans the full height of the input
+                            >
+                                {isPasswordVisible ? (
+                                    <FaEye className="h-5 w-5" />
+                                ) : (
+                                    <FaRegEyeSlash className="h-5 w-5" />
+                                )}
+                            </button>
+                        </div>
                     </div>
 
-                    {/* Forgot Password Link */}
                     <div className="text-right mb-4">
                         <Link
                             to="/Forgotpassword"

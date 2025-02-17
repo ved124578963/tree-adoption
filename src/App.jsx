@@ -13,6 +13,16 @@ import Mytrees from "./Pages/Mytrees";
 import Leaderboard from "./Pages/Leaderboard";
 import Donatetree from "./Pages/Donatetree";
 import ProfilePage from "./Components/ProfilePage";
+import AdminTrees from "./Pages/AdminTrees";
+import ReportsAnalytics from "./Pages/ReportsAnalytics";
+import Adminemails from "./Pages/Adminemails";
+import Treemanagement from "./Pages/Treemanagement";
+import Feedback from "./Pages/Feedback";
+import Floatingbutton from "./Components/Floatingbutton";
+import Registertree from "./Pages/Registertree";
+import AdminWhatsapp from "./Pages/AdminWhatsapp";
+import ChatButton from "./Pages/ChatButton";
+
 
 function App() {
     const user = JSON.parse(localStorage.getItem("user")); // Get user from localStorage
@@ -21,7 +31,6 @@ function App() {
         <Router>
             <div className="min-h-screen flex flex-col">
                 {" "}
-                {/* Full height wrapper */}
                 <Navbar /> {/* Navbar at the top */}
                 <main className="flex-grow">
                     {" "}
@@ -48,8 +57,17 @@ function App() {
                             path="/profile"
                             element={<ProfilePage user={user} />}
                         />
+                        
+                        <Route path="/AdminTrees" element={<AdminTrees />} />
+                        <Route path="/ReportsAnalytics" element={<ReportsAnalytics/>} />
+                        <Route path="/Adminemails" element={<Adminemails/>} />
+                        <Route path="/Treemanagement" element={<Treemanagement/>} />
+                        <Route path="/Feedback" element={<Feedback/>} />
+                        <Route path="/Registertree" element={<Registertree/>} />
+                        <Route path="/AdminWhatsapp" element={<AdminWhatsapp/>} />
                     </Routes>
                 </main>
+                <ChatButton /> 
                 <Footer /> {/* Footer stays at the bottom */}
             </div>
         </Router>

@@ -14,7 +14,7 @@ const ForgotPassword = () => {
     setMessage("");
 
     try {
-      const response = await axios.post("http://localhost:8080/treeowner/forgot-password", formData);
+      const response = await axios.post("https://treeplantadopt-springboot-production.up.railway.app/treeowner/forgot-password", formData);
       if (response.status === 200) {
         setMessage("A temporary Password has been sent to your email.");
       }

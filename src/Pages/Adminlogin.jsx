@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const AdminLogin = () => {
   const [username, setUsername] = useState("");
@@ -7,16 +8,37 @@ const AdminLogin = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setError(""); // Clear previous errors
 
-    // Temporary login validation (API will be added later)
-    if (username === "admin" && password === "admin123") {
-      localStorage.setItem("admin", JSON.stringify({ username })); // Store admin session
-      navigate("/admindashboard"); // Redirect to Admin Dashboard
-    } else {
-      setError("Invalid username or password");
+    try {
+      const response = await axios.post(
+        "https://treeplantadopt-springboot-production.up.railway.app/admin/login",
+        { username, password }
+      );
+
+      // Log the entire response for debugging
+      console.log("Response from backend:", response);
+
+      // Check if the response is successful
+      if (response.status === 200 && response.data === "Successfull") {
+        // Redirect to Admin Dashboard
+        navigate("/admindashboard");
+      } else {
+        // Display error message for invalid credentials
+        setError("Invalid username or password");
+      }
+    } catch (error) {
+      // Log the error response for debugging
+      console.error("Error during login:", error);
+
+      // Handle errors appropriately
+      if (error.response && error.response.status === 401) {
+        setError("Invalid username or password");
+      } else {
+        setError("An error occurred. Please try again later.");
+      }
     }
   };
 
