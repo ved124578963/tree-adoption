@@ -57,7 +57,6 @@ const Adminusers = () => {
             <tr className="bg-gray-200">
               <th className="border p-2">Id</th>
               <th className="border p-2">Username</th>
-              <th className="border p-2">Password</th>
               <th className="border p-2">FirstName</th>
               <th className="border p-2">MiddleName</th>
               <th className="border p-2">LastName</th>
@@ -73,7 +72,6 @@ const Adminusers = () => {
               <tr key={user.id} className="border">
                 <td className="border p-2">{user.id}</td>
                 <td className="border p-2">{user.username}</td>
-                <td className="border p-2">{user.password}</td>
                 <td className="border p-2">{user.firstName}</td>
                 <td className="border p-2">{user.middleName}</td>
                 <td className="border p-2">{user.lastName}</td>

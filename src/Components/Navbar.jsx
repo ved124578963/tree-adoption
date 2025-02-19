@@ -34,6 +34,9 @@ const Navbar = () => {
                     <Link to="/Eventlist" className="hover:underline">
                         Events
                     </Link>
+                    <Link to="/Social" className="hover:underline">
+                        Social
+                    </Link>
                     {user ? (
                         <>
                             <Link to="/profile" className="hover:underline">
@@ -83,26 +86,30 @@ const Navbar = () => {
                         Adopt Tree
                     </Link>
                     <Link
-                        to="/Mytrees"
-                        className="hover:underline"
-                        onClick={() => setIsOpen(false)}
-                    >
-                        My Trees
-                    </Link>
-                    <Link
                         to="/leaderboard"
                         className="hover:underline"
                         onClick={() => setIsOpen(false)}
                     >
                         Leaderboard
                     </Link>
+                    <Link to="/Eventlist" className="hover:underline">
+                        Events
+                    </Link>
+                    <Link to="/Social" className="hover:underline">
+                        Social
+                    </Link>
                     {user ? (
-                        <button
-                            onClick={handleLogout}
-                            className="bg-red-500 text-white px-4 py-1 rounded-lg hover:bg-red-600"
-                        >
-                            Logout
-                        </button>
+                        <>
+                            <Link to="/profile" className="hover:underline">
+                                Profile
+                            </Link>
+                            <button
+                                onClick={handleLogout}
+                                className="bg-red-500 text-white px-4 py-1 rounded-lg hover:bg-red-600"
+                                >
+                                Logout
+                            </button>
+                        </>
                     ) : (
                         <Link
                             to="/login"

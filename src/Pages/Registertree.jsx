@@ -102,8 +102,8 @@ const Registertree = () => {
     const treeData = {
       name: formData.name,
       type: formData.type,
-      longitude: formData.longitude,
-      latitude: formData.latitude,
+      longitude: parseFloat(formData.longitude),
+      latitude: parseFloat(formData.latitude),
       treeOwner: { id: user.id },
     };
 
@@ -115,7 +115,7 @@ const Registertree = () => {
     formDataWithImage.append("image", photo, "tree_image.png");
 
     try {
-      const response = await axios.post("https://treeplantadopt-springboot-production.up.railway.app/registertree", formDataWithImage, {
+      const response = await axios.post("https://treeplantadopt-springboot-production.up.railway.app/trees/registertree", formDataWithImage, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       if (response.status !== 200) {
@@ -126,6 +126,11 @@ const Registertree = () => {
       setPhoto(null);
     } catch (error) {
       console.error("Error:", error);
+      if (error.response) {
+        console.error("Error response data:", error.response.data);
+        console.error("Error response status:", error.response.status);
+        console.error("Error response headers:", error.response.headers);
+      }
       setError("Error registering tree. Please try again.");
     }
   };

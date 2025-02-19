@@ -24,6 +24,8 @@ import AdminWhatsapp from "./Pages/AdminWhatsapp";
 import ChatButton from "./Pages/ChatButton";
 import Eventmanagement from "./Pages/Eventmanagement";
 import EventList from "./Pages/Eventlist";
+import Request from "./Pages/Request";
+import Social from "./Pages/Social";
 
 
 function App() {
@@ -69,6 +71,8 @@ function App() {
                         <Route path="/AdminWhatsapp" element={<AdminWhatsapp/>} />
                         <Route path="/Eventmanagement" element={<Eventmanagement/>} />
                         <Route path="/Eventlist" element={<EventList />} />
+                        <Route path="/Request" element={<Request />} />
+                        <Route path="/Social" element={<Social/>} />
                     </Routes>
                 </main>
                 <ChatButton /> 

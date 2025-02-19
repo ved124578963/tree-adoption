@@ -14,11 +14,17 @@ const Adopttrees = () => {
   const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
-    axios
-      .get("https://treeplantadopt-springboot-production.up.railway.app/donations/all")
-      .then(response => setTrees(response.data))
-      .catch(error => console.error("Error fetching trees:", error));
+    fetchTreeData();
   }, []);
+
+  const fetchTreeData = async () => {
+    try {
+      const response = await axios.get("https://treeplantadopt-springboot-production.up.railway.app/donations/all");
+      setTrees(response.data);
+    } catch (error) {
+      console.error("Error fetching trees:", error);
+    }
+  };
 
   const handleAdopt = (tree) => {
     setSelectedTree(tree);
@@ -41,7 +47,6 @@ const Adopttrees = () => {
       donation: { id: selectedTree.id }, // Tree donation ID
       requestedQuantity: requestedQuantity, // User-selected quantity
     };
-    console.log(selectedTree.id);
 
     try {
       const response = await axios.post(
@@ -53,14 +58,30 @@ const Adopttrees = () => {
       if (response.status === 200) {
         setMessage("Adoption request sent successfully!");
         setSelectedTree(null); // Close the form after success
+        // Fetch the updated tree data
+        fetchTreeData();
       } else {
         setMessage("Failed to send adoption request.");
       }
     } catch (error) {
-      console.error("Error sending adoption request:", error);
       setMessage("Error occurred while processing your request.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async (treeId) => {
+    try {
+      const response = await axios.delete(`https://treeplantadopt-springboot-production.up.railway.app/donations/delete/${treeId}`);
+      if (response.status === 200) {
+        setMessage("Donation deleted successfully!");
+        // Remove the deleted tree from the state
+        setTrees((prevTrees) => prevTrees.filter((tree) => tree.id !== treeId));
+      } else {
+        setMessage("Failed to delete donation.");
+      }
+    } catch (error) {
+      setMessage("Error occurred while deleting the donation.");
     }
   };
 
@@ -96,7 +117,6 @@ const Adopttrees = () => {
               <div className="absolute inset-0 bg-black bg-opacity-50 text-white flex flex-col items-center justify-center opacity-0 group-hover:opacity-70 transition-opacity">
                 <p className="text-lg font-semibold">{tree.species}</p>
                 <p className="text-sm">Quantity: {tree.quantity}</p>
-                <p className="text-sm">Donor ID: {tree.donor.id}</p>
                 <p className="text-sm">Available: {tree.available ? "Yes" : "No"}</p>
               </div>
             </div>
@@ -106,6 +126,14 @@ const Adopttrees = () => {
             >
               Adopt Me
             </button>
+            {user.id === tree.donor.id && (
+              <button
+                onClick={() => handleDelete(tree.id)}
+                className="mt-3 ml-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
+              >
+                Delete
+              </button>
+            )}
           </div>
         ))}
       </div>

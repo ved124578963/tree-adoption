@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Mytrees from "../Pages/Mytrees";
+import Request from "../Pages/Request";
 
 const user = JSON.parse(localStorage.getItem("user"));
 const ProfilePage = () => {
@@ -233,7 +234,7 @@ const ProfilePage = () => {
                     </button>
                 </form>
             )}
-
+            <Request />
             {/* Add MyPage component */}
             <Mytrees />
         </div>
