@@ -14,7 +14,7 @@ const Signup = () => {
         dateOfBirth: "",
         country: "",
         state: "",
-        district: "",
+        district: "", 
         taluka: "",
         village: "",
         pincode: "",

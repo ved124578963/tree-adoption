@@ -15,7 +15,7 @@ const MyTrees = () => {
         const fetchTrees = async () => {
             try {
                 const response = await axios.get(
-                    "http://localhost:8080/api/treeowner/my-trees",
+                    `https://treeplantadopt-springboot-production.up.railway.app/trees/owner/${user.id}`,
                     {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem(

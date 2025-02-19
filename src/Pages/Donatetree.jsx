@@ -26,6 +26,7 @@ const Donatetree = () => {
         setSuccess("");
 
         const donorId = JSON.parse(localStorage.getItem("user"))?.id;
+        console.log(donorId);
         if (!donorId) {
             setError("Donor ID not found. Please log in.");
             return;
@@ -36,7 +37,6 @@ const Donatetree = () => {
         formDataWithImage.append("species", formData.species);
         formDataWithImage.append("quantity", formData.quantity);
         formDataWithImage.append("image", treeImage);
-
         try {
             const response = await axios.post(
                 "https://treeplantadopt-springboot-production.up.railway.app/donations/donate",

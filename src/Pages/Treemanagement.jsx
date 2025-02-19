@@ -7,7 +7,7 @@ const Treemanagement = () => {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    axios.get("https://your-backend-api.com/api/trees")
+    axios.get("https://treeplantadopt-springboot-production.up.railway.app/trees")
       .then(response => setTrees(response.data))
       .catch(error => console.error("Error fetching trees:", error));
   }, []);

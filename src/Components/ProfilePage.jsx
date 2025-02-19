@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Mytrees from "../Pages/Mytrees";
 
-const ProfilePage = ({ user }) => {
+const user = JSON.parse(localStorage.getItem("user"));
+const ProfilePage = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [isEditingPassword, setIsEditingPassword] = useState(false);
     const [firstName, setFirstName] = useState("");
@@ -12,13 +14,8 @@ const ProfilePage = ({ user }) => {
     const [username, setUsername] = useState("");
     const [profileImg, setProfileImg] = useState("");
     const [loading, setLoading] = useState(true);
-
     useEffect(() => {
-        const hasReloaded = sessionStorage.getItem("hasReloaded");
-        if (!hasReloaded) {
-            sessionStorage.setItem("hasReloaded", "true");
-            window.location.reload();
-        } else {
+        
             if (user) {
                 setFirstName(user.firstName);
                 setLastName(user.lastName);
@@ -26,7 +23,6 @@ const ProfilePage = ({ user }) => {
                 setProfileImg(user.profileImg);
                 setLoading(false);
             }
-        }
     }, [user]);
 
     if (loading) {
@@ -83,48 +79,48 @@ const ProfilePage = ({ user }) => {
 
     return (
         <div className="max-w-4xl mx-auto p-4">
-            <h1 className="text-3xl font-bold text-center mb-8">Profile</h1>
+            <h1 className="text-4xl font-bold text-center mb-8 text-green-700">Profile</h1>
 
-            <div className="bg-white p-6 rounded-lg shadow-md text-center">
+            <div className="bg-white p-8 rounded-lg shadow-lg text-center">
                 <div className="flex flex-col items-center">
                     <img
                         src={`https://treeplantadopt-springboot-production.up.railway.app/files/treeowners/images/${profileImg}`}
                         alt="Profile"
-                        className="w-24 h-24 rounded-full mb-4"
+                        className="w-32 h-32 rounded-full mb-4 border-4 border-green-500"
                     />
-                    <p className="text-xl font-semibold">
+                    <p className="text-2xl font-semibold text-gray-800">
                         {firstName} {lastName}
                     </p>
                     <p className="text-gray-500 text-sm">@{username}</p>
 
-                    <div className="flex justify-center gap-4 mt-4">
-                        <div className="bg-green-100 p-4 rounded-lg shadow-md w-36">
+                    <div className="flex justify-center gap-8 mt-6">
+                        <div className="bg-green-100 p-6 rounded-lg shadow-md w-40">
                             <p className="text-lg font-bold text-green-600">
                                 Total Trees
                             </p>
-                            <p className="text-2xl font-semibold">
+                            <p className="text-3xl font-semibold text-green-800">
                                 {user.totalTrees}
                             </p>
                         </div>
-                        <div className="bg-green-100 p-4 rounded-lg shadow-md w-36">
+                        <div className="bg-green-100 p-6 rounded-lg shadow-md w-40">
                             <p className="text-lg font-bold text-green-600">
                                 Total Rewards
                             </p>
-                            <p className="text-2xl font-semibold">
+                            <p className="text-3xl font-semibold text-green-800">
                                 {user.totalRewards}
                             </p>
                         </div>
                     </div>
 
-                    <div className="mt-6 flex gap-4">
+                    <div className="mt-8 flex gap-4">
                         <button
-                            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                            className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition"
                             onClick={handleEditClick}
                         >
                             {isEditing ? "Cancel" : "Edit Profile"}
                         </button>
                         <button
-                            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                            className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition"
                             onClick={handleEditPasswordClick}
                         >
                             {isEditingPassword ? "Cancel" : "Edit Password"}
@@ -136,9 +132,9 @@ const ProfilePage = ({ user }) => {
             {isEditing && (
                 <form
                     onSubmit={handleFormSubmit}
-                    className="mt-6 bg-white p-6 rounded-lg shadow-md"
+                    className="mt-6 bg-white p-8 rounded-lg shadow-lg"
                 >
-                    <div className="mb-4">
+                    <div className="mb-6">
                         <label
                             className="block text-green-600 mb-2"
                             htmlFor="firstName"
@@ -150,10 +146,10 @@ const ProfilePage = ({ user }) => {
                             id="firstName"
                             value={firstName}
                             onChange={(e) => setFirstName(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded-lg"
+                            className="w-full p-3 border border-gray-300 rounded-lg"
                         />
                     </div>
-                    <div className="mb-4">
+                    <div className="mb-6">
                         <label
                             className="block text-green-600 mb-2"
                             htmlFor="lastName"
@@ -165,12 +161,12 @@ const ProfilePage = ({ user }) => {
                             id="lastName"
                             value={lastName}
                             onChange={(e) => setLastName(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded-lg"
+                            className="w-full p-3 border border-gray-300 rounded-lg"
                         />
                     </div>
                     <button
                         type="submit"
-                        className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+                        className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition"
                     >
                         Save Changes
                     </button>
@@ -180,9 +176,9 @@ const ProfilePage = ({ user }) => {
             {isEditingPassword && (
                 <form
                     onSubmit={handlePasswordFormSubmit}
-                    className="mt-6 bg-white p-6 rounded-lg shadow-md"
+                    className="mt-6 bg-white p-8 rounded-lg shadow-lg"
                 >
-                    <div className="mb-4">
+                    <div className="mb-6">
                         <label
                             className="block text-green-600 mb-2"
                             htmlFor="oldPassword"
@@ -194,10 +190,10 @@ const ProfilePage = ({ user }) => {
                             id="oldPassword"
                             value={oldPassword}
                             onChange={(e) => setOldPassword(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded-lg"
+                            className="w-full p-3 border border-gray-300 rounded-lg"
                         />
                     </div>
-                    <div className="mb-4">
+                    <div className="mb-6">
                         <label
                             className="block text-green-600 mb-2"
                             htmlFor="newPassword"
@@ -209,10 +205,10 @@ const ProfilePage = ({ user }) => {
                             id="newPassword"
                             value={newPassword}
                             onChange={(e) => setNewPassword(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded-lg"
+                            className="w-full p-3 border border-gray-300 rounded-lg"
                         />
                     </div>
-                    <div className="mb-4">
+                    <div className="mb-6">
                         <label
                             className="block text-green-600 mb-2"
                             htmlFor="confirmNewPassword"
@@ -226,17 +222,20 @@ const ProfilePage = ({ user }) => {
                             onChange={(e) =>
                                 setConfirmNewPassword(e.target.value)
                             }
-                            className="w-full p-2 border border-gray-300 rounded-lg"
+                            className="w-full p-3 border border-gray-300 rounded-lg"
                         />
                     </div>
                     <button
                         type="submit"
-                        className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+                        className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition"
                     >
                         Save Password
                     </button>
                 </form>
             )}
+
+            {/* Add MyPage component */}
+            <Mytrees />
         </div>
     );
 };

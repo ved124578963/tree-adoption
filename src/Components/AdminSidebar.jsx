@@ -4,6 +4,7 @@ import { FiUsers, FiBarChart2, FiLogOut, FiMenu } from "react-icons/fi";
 import {TiTree} from "react-icons/ti";
 import { MdOutlineMailOutline } from "react-icons/md";
 import { FaWhatsapp } from "react-icons/fa";
+import { BsCalendar2Event } from "react-icons/bs";
 
 const AdminSidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -49,6 +50,12 @@ const AdminSidebar = () => {
           <Link to="/AdminWhatsapp" className="flex items-center space-x-2 hover:text-green-400">
           <FaWhatsapp />
             {isOpen && <span>WhatsApp Messages</span>}
+          </Link>
+        </li>
+        <li>
+          <Link to="/Eventmanagement" className="flex items-center space-x-2 hover:text-green-400">
+          <BsCalendar2Event />
+            {isOpen && <span>Event Management</span>}
           </Link>
         </li>
         <li>

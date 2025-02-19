@@ -22,6 +22,8 @@ import Floatingbutton from "./Components/Floatingbutton";
 import Registertree from "./Pages/Registertree";
 import AdminWhatsapp from "./Pages/AdminWhatsapp";
 import ChatButton from "./Pages/ChatButton";
+import Eventmanagement from "./Pages/Eventmanagement";
+import EventList from "./Pages/Eventlist";
 
 
 function App() {
@@ -55,7 +57,7 @@ function App() {
                         <Route path="/Donatetree" element={<Donatetree />} />
                         <Route
                             path="/profile"
-                            element={<ProfilePage user={user} />}
+                            element={<ProfilePage  />}
                         />
                         
                         <Route path="/AdminTrees" element={<AdminTrees />} />
@@ -65,6 +67,8 @@ function App() {
                         <Route path="/Feedback" element={<Feedback/>} />
                         <Route path="/Registertree" element={<Registertree/>} />
                         <Route path="/AdminWhatsapp" element={<AdminWhatsapp/>} />
+                        <Route path="/Eventmanagement" element={<Eventmanagement/>} />
+                        <Route path="/Eventlist" element={<EventList />} />
                     </Routes>
                 </main>
                 <ChatButton /> 

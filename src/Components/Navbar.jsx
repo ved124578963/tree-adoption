@@ -27,11 +27,12 @@ const Navbar = () => {
                     <Link to="/Adopttrees" className="hover:underline">
                         Adopt Tree
                     </Link>
-                    <Link to="/Mytrees" className="hover:underline">
-                        My Trees
-                    </Link>
+
                     <Link to="/Leaderboard" className="hover:underline">
                         Leaderboard
+                    </Link>
+                    <Link to="/Eventlist" className="hover:underline">
+                        Events
                     </Link>
                     {user ? (
                         <>
