@@ -27,6 +27,7 @@ import EventList from "./Pages/Eventlist";
 import Request from "./Pages/Request";
 import Social from "./Pages/Social";
 import ProfileSidebar from "./Components/ProfileSidebar";
+import InviteOthers from "./Pages/InviteOthers";
 
 
 function App() {
@@ -75,6 +76,7 @@ function App() {
                         <Route path="/Request" element={<Request />} />
                         <Route path="/Social" element={<Social/>} />
                         <Route path="/ProfileSidebar" element={<ProfileSidebar/>} />
+                        <Route path="/InviteOthers" element={<InviteOthers />} />
                     </Routes>
                 </main>
                 <ChatButton /> 

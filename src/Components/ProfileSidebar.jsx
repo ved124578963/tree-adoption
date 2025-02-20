@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X, User, TreePine, Mail, List, LogOut } from "lucide-react";
+import { BsCalendar2Event } from "react-icons/bs";
 
 const ProfileSidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -33,9 +34,15 @@ const ProfileSidebar = () => {
             </Link>
           </li>
           <li>
-            <Link to="/invite" className="flex items-center space-x-2 hover:text-green-400">
+            <Link to="/InviteOthers" className="flex items-center space-x-2 hover:text-green-400">
               <Mail />
               {isOpen && <span>Invite Others</span>}
+            </Link>
+          </li>
+          <li>
+            <Link to="/Eventlist" className="flex items-center space-x-2 hover:text-green-400">
+              <BsCalendar2Event />
+              {isOpen && <span>Events</span>}
             </Link>
           </li>
           <li>

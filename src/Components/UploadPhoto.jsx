@@ -51,6 +51,7 @@ const schema = {
         ],
     },
 };
+console.log(schema);
 const genAI = new GoogleGenerativeAI("AIzaSyCMhuhudG9S33XEF8ThLZYAFrrbK1ZVzLM");
 const model = genAI.getGenerativeModel({
     model: "gemini-1.5-flash",

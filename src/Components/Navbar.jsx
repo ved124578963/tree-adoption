@@ -31,9 +31,6 @@ const Navbar = () => {
                     <Link to="/Leaderboard" className="hover:underline">
                         Leaderboard
                     </Link>
-                    <Link to="/Eventlist" className="hover:underline">
-                        Events
-                    </Link>
                     <Link to="/Social" className="hover:underline">
                         Social
                     </Link>
@@ -85,9 +82,6 @@ const Navbar = () => {
                         onClick={() => setIsOpen(false)}
                     >
                         Leaderboard
-                    </Link>
-                    <Link to="/Eventlist" className="hover:underline">
-                        Events
                     </Link>
                     <Link to="/Social" className="hover:underline">
                         Social

@@ -23,15 +23,83 @@ const MyTrees = () => {
             },
           }
         );
-        setTrees(response.data);
+
+        const treesWithLocation = await Promise.all(
+          response.data.map(async (tree) => {
+            const locationResponse = await axios.get(
+              `https://nominatim.openstreetmap.org/reverse?lat=${tree.latitude}&lon=${tree.longitude}&format=json`
+            );
+            return {
+              ...tree,
+              location: locationResponse.data.display_name,
+            };
+          })
+        );
+
+        setTrees(treesWithLocation);
       } catch (error) {
         console.error("Error fetching trees:", error);
       } finally {
         setLoading(false);
       }
     };
+
     fetchTrees();
   }, [user]);
+
+  const getDistanceFromLatLonInMeters = (lat1, lon1, lat2, lon2) => {
+    const R = 6371e3; // Radius of the Earth in meters
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLon = ((lon2 - lon1) * Math.PI) / 180;
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c; // Distance in meters
+    return distance;
+  };
+
+  const handleUploadPhoto = async (tree) => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const distance = getDistanceFromLatLonInMeters(
+            position.coords.latitude,
+            position.coords.longitude,
+            parseFloat(tree.latitude),
+            parseFloat(tree.longitude)
+          );
+
+          if (distance <= 6) {
+            // Open the camera
+            try {
+              const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+              const videoElement = document.createElement("video");
+              videoElement.srcObject = stream;
+              videoElement.play();
+              document.body.appendChild(videoElement);
+              alert("Camera opened. Please take a photo.");
+              // Add your camera opening logic here
+            } catch (error) {
+              console.error("Error accessing camera: ", error);
+              alert("Unable to access camera. Please check your camera settings.");
+            }
+          } else {
+            alert("You are not within the required range to upload a photo.");
+          }
+        },
+        (error) => {
+          console.error("Error fetching location: ", error);
+          alert("Unable to retrieve location. Please enable location services.");
+        }
+      );
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+  };
 
   if (!user) {
     return (
@@ -61,16 +129,19 @@ const MyTrees = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {trees.map((tree) => (
               <div key={tree.id} className="bg-white p-4 rounded-lg shadow-md">
-                <h2 className="text-lg font-semibold">{tree.treeName || "Unnamed Tree"}</h2>
-                <p className="text-gray-600">Type: {tree.treeType}</p>
-                <p className="text-gray-600">Planted on: {tree.plantingDate}</p>
+                <h2 className="text-lg font-semibold">{tree.name || "Unnamed Tree"}</h2>
+                <p className="text-gray-600">Type: {tree.type}</p>
+                <p className="text-gray-600">Planted on: {tree.registeredDate}</p>
                 <p className="text-gray-600">Location: {tree.location}</p>
                 <img
-                  src={tree.photoUrl}
+                  src={`https://treeplantadopt-springboot-production.up.railway.app/files/treescan/images/${tree.treeImg}`}
                   alt="Tree"
                   className="w-full h-40 object-cover rounded mt-2"
                 />
-                <button className="mt-3 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                <button
+                  className="mt-3 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                  onClick={() => handleUploadPhoto(tree)}
+                >
                   Upload Progress Photo
                 </button>
               </div>
