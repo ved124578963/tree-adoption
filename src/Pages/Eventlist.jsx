@@ -17,7 +17,9 @@ const EventList = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get("https://treeplantadopt-springboot-production.up.railway.app/events/all");
+      const response = await axios.get(
+        "https://treeplantadopt-springboot-production.up.railway.app/events/all"
+      );
       setEvents(response.data);
     } catch (error) {
       console.error("Error fetching events:", error);
@@ -26,7 +28,9 @@ const EventList = () => {
 
   const handleJoinEvent = async (eventId) => {
     try {
-      await axios.post(`https://treeplantadopt-springboot-production.up.railway.app/events/${eventId}/join/${user.id}`);
+      await axios.post(
+        `https://treeplantadopt-springboot-production.up.railway.app/events/${eventId}/join/${user.id}`
+      );
       setEvents((prevEvents) =>
         prevEvents.map((event) =>
           event.id === eventId ? { ...event, isJoined: true } : event
@@ -40,7 +44,9 @@ const EventList = () => {
 
   const handleLeaveEvent = async (eventId) => {
     try {
-      await axios.post(`https://treeplantadopt-springboot-production.up.railway.app/events/${eventId}/leave/${userId}`);
+      await axios.post(
+        `https://treeplantadopt-springboot-production.up.railway.app/events/${eventId}/leave/${userId}`
+      );
       setEvents((prevEvents) =>
         prevEvents.map((event) =>
           event.id === eventId ? { ...event, isJoined: false } : event
@@ -53,11 +59,12 @@ const EventList = () => {
   };
 
   return (
-    <div className="flex">
-      <ProfileSidebar />
-      <div className="flex-1 p-6 min-h-screen bg-gray-100">
-        <h2 className="text-2xl font-bold text-center mb-6">Available Events</h2>
-        {success && <p className="text-green-500 text-center mb-4">{success}</p>}
+    <div className="p-6 min-h-screen bg-gray-100">
+      <h2 className="text-2xl font-bold text-center mb-6">Available Events</h2>
+      {success && (
+        <p className="text-green-500 text-center mb-4">{success}</p>
+      )}
+      <div className="overflow-x-auto">
         <table className="w-full border-collapse border border-gray-300 bg-white shadow-lg rounded-lg">
           <thead className="bg-green-600 text-white">
             <tr>

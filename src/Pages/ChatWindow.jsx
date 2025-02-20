@@ -43,7 +43,7 @@ const ChatWindow = () => {
     };
 
     return (
-        <div className="fixed bottom-20 right-4 w-100 h-120 bg-white border border-gray-300 rounded-lg shadow-lg flex flex-col">
+        <div className="fixed bottom-20 right-4 w-80 h-96 md:w-100 md:h-120 bg-white border border-gray-300 rounded-lg shadow-lg flex flex-col ml-4 mr-4">
             <div className="bg-blue-500 text-white p-4 rounded-t-lg text-center">
                 Chat
             </div>

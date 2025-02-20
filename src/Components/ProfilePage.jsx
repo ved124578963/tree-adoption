@@ -16,16 +16,20 @@ const ProfilePage = () => {
   const [username, setUsername] = useState("");
   const [profileImg, setProfileImg] = useState("");
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    if (user) {
-      setFirstName(user.firstName);
-      setLastName(user.lastName);
-      setUsername(user.username);
-      setProfileImg(user.profileImg);
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    console.log(storedUser);
+    if (storedUser) {
+      setUser(storedUser);
+      setFirstName(storedUser.firstName);
+      setLastName(storedUser.lastName);
+      setUsername(storedUser.username);
+      setProfileImg(storedUser.profileImg);
       setLoading(false);
-    }
-  }, [user]);
+     }
+  }, []);
 
   if (loading) {
     return <div className="text-center mt-10 text-xl">Loading...</div>;
