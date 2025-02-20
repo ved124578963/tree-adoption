@@ -5,6 +5,8 @@ import {TiTree} from "react-icons/ti";
 import { MdOutlineMailOutline } from "react-icons/md";
 import { FaWhatsapp } from "react-icons/fa";
 import { BsCalendar2Event } from "react-icons/bs";
+import { VscFeedback } from "react-icons/vsc";
+
 
 const AdminSidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -59,9 +61,9 @@ const AdminSidebar = () => {
           </Link>
         </li>
         <li>
-          <Link to="/ReportsAnalytics" className="flex items-center space-x-2 hover:text-green-400">
-            <FiBarChart2 />
-            {isOpen && <span>Reports & Analytics</span>}
+          <Link to="/ReportAnalytics" className="flex items-center space-x-2 hover:text-green-400">
+            <VscFeedback />
+            {isOpen && <span>Feedback</span>}
           </Link>
         </li>
         <li>
