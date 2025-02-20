@@ -26,6 +26,7 @@ import Eventmanagement from "./Pages/Eventmanagement";
 import EventList from "./Pages/Eventlist";
 import Request from "./Pages/Request";
 import Social from "./Pages/Social";
+import ProfileSidebar from "./Components/ProfileSidebar";
 
 
 function App() {
@@ -73,6 +74,7 @@ function App() {
                         <Route path="/Eventlist" element={<EventList />} />
                         <Route path="/Request" element={<Request />} />
                         <Route path="/Social" element={<Social/>} />
+                        <Route path="/ProfileSidebar" element={<ProfileSidebar/>} />
                     </Routes>
                 </main>
                 <ChatButton /> 

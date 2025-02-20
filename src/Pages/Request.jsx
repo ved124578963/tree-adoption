@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import ProfileSidebar from "../Components/ProfileSidebar";
 
 const Request = () => {
   const [requests, setRequests] = useState([]);
@@ -53,27 +54,30 @@ const Request = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <h2 className="text-2xl font-bold text-center mb-4">Adoption Requests</h2>
-      {error && <p className="text-red-500 text-center">{error}</p>}
-      {message && <p className="text-green-500 text-center">{message}</p>}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {requests.map((request) => (
-          <div key={request.id} className="bg-white p-4 rounded-lg shadow-md">
-            <h3 className="text-lg font-bold mb-2">Species: {request.donation.species}</h3>
-            <p>Donor: {request.donation.donor.username}</p>
-            <p>Requested Quantity: {request.requestedQuantity}</p>
-            <p>Status: {request.status}</p>
-            {request.status !== "COMPLETED" && (
-              <button
-                onClick={() => handleApprove(request.id)}
-                className="mt-3 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
-              >
-                Approve
-              </button>
-            )}
-          </div>
-        ))}
+    <div className="flex">
+      <ProfileSidebar />
+      <div className="flex-1 p-6 bg-gray-100 min-h-screen">
+        <h2 className="text-2xl font-bold text-center mb-4">Adoption Requests</h2>
+        {error && <p className="text-red-500 text-center">{error}</p>}
+        {message && <p className="text-green-500 text-center">{message}</p>}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {requests.map((request) => (
+            <div key={request.id} className="bg-white p-4 rounded-lg shadow-md">
+              <h3 className="text-lg font-bold mb-2">Species: {request.donation.species}</h3>
+              <p>Donor: {request.donation.donor.username}</p>
+              <p>Requested Quantity: {request.requestedQuantity}</p>
+              <p>Status: {request.status}</p>
+              {request.status !== "COMPLETED" && (
+                <button
+                  onClick={() => handleApprove(request.id)}
+                  className="mt-3 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+                >
+                  Approve
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

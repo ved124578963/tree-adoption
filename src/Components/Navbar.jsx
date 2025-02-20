@@ -42,12 +42,6 @@ const Navbar = () => {
                             <Link to="/profile" className="hover:underline">
                                 Profile
                             </Link>
-                            <button
-                                onClick={handleLogout}
-                                className="bg-red-500 text-white px-4 py-1 rounded-lg hover:bg-red-600"
-                            >
-                                Logout
-                            </button>
                         </>
                     ) : (
                         <Link
@@ -103,12 +97,6 @@ const Navbar = () => {
                             <Link to="/profile" className="hover:underline">
                                 Profile
                             </Link>
-                            <button
-                                onClick={handleLogout}
-                                className="bg-red-500 text-white px-4 py-1 rounded-lg hover:bg-red-600"
-                                >
-                                Logout
-                            </button>
                         </>
                     ) : (
                         <Link

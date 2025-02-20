@@ -126,11 +126,6 @@ const Registertree = () => {
       setPhoto(null);
     } catch (error) {
       console.error("Error:", error);
-      if (error.response) {
-        console.error("Error response data:", error.response.data);
-        console.error("Error response status:", error.response.status);
-        console.error("Error response headers:", error.response.headers);
-      }
       setError("Error registering tree. Please try again.");
     }
   };
