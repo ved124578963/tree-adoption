@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X, User, TreePine, Mail, List, LogOut } from "lucide-react";
 import { BsCalendar2Event } from "react-icons/bs";
+import { GiProgression } from "react-icons/gi";
 
 const ProfileSidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -24,7 +25,7 @@ const ProfileSidebar = () => {
           <li>
             <Link to="/Mytrees" className="flex items-center space-x-2 hover:text-green-400">
               <TreePine />
-              {isOpen && <span>Adopted Trees</span>}
+              {isOpen && <span>My Trees</span>}
             </Link>
           </li>
           <li>
@@ -43,6 +44,12 @@ const ProfileSidebar = () => {
             <Link to="/Eventlist" className="flex items-center space-x-2 hover:text-green-400">
               <BsCalendar2Event />
               {isOpen && <span>Events</span>}
+            </Link>
+          </li>
+          <li>
+            <Link to="/ProgressPhotos" className="flex items-center space-x-2 hover:text-green-400">
+            <GiProgression />
+              {isOpen && <span>Progress</span>}
             </Link>
           </li>
           <li>

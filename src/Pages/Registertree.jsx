@@ -43,13 +43,18 @@ const Registertree = () => {
         (position) => {
           setFormData((prevData) => ({
             ...prevData,
-            longitude: position.coords.longitude.toString(),
-            latitude: position.coords.latitude.toString(),
+            longitude: position.coords.longitude.toFixed(15),
+            latitude: position.coords.latitude.toFixed(15),
           }));
         },
         (error) => {
           console.error("Error fetching location: ", error);
           alert("Unable to retrieve location. Please enable location services.");
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0,
         }
       );
     } else {
@@ -57,9 +62,18 @@ const Registertree = () => {
     }
   };
 
+  const handlePhotoSelection = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setPhoto(file);
+      alert("Photo selected successfully! Now fetching location...");
+      getLocationAfterPhoto();
+    }
+  };
+
   const handlePhotoCapture = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { exact: "environment" } } });
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         videoRef.current.play();
@@ -144,6 +158,10 @@ const Registertree = () => {
           <div className="mb-4">
             <label className="block text-gray-700">Tree Type</label>
             <input type="text" name="type" className="w-full px-3 py-2 border rounded-md" placeholder="Enter tree type" value={formData.type} onChange={handleChange} required />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700">Select Photo</label>
+            <input type="file" accept="image/*" className="w-full px-3 py-2 border rounded-md" onChange={handlePhotoSelection} disabled={!isPhotoButtonEnabled} />
           </div>
           <button type="button" className={`w-full flex items-center justify-center gap-2 py-2 rounded mb-3 text-white ${isPhotoButtonEnabled ? "bg-green-500 hover:bg-green-600" : "bg-gray-300 cursor-not-allowed"}`} onClick={handlePhotoCapture} disabled={!isPhotoButtonEnabled}>
             <Camera size={18} />

@@ -59,50 +59,53 @@ const EventList = () => {
   };
 
   return (
-    <div className="p-6 min-h-screen bg-gray-100">
-      <h2 className="text-2xl font-bold text-center mb-6">Available Events</h2>
-      {success && (
-        <p className="text-green-500 text-center mb-4">{success}</p>
-      )}
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse border border-gray-300 bg-white shadow-lg rounded-lg">
-          <thead className="bg-green-600 text-white">
-            <tr>
-              <th className="border p-2">Event Name</th>
-              <th className="border p-2">Date</th>
-              <th className="border p-2">Time</th>
-              <th className="border p-2">Description</th>
-              <th className="border p-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {events.map((event) => (
-              <tr key={event.id} className="border text-center">
-                <td className="border p-2">{event.place}</td>
-                <td className="border p-2">{event.date}</td>
-                <td className="border p-2">{event.time}</td>
-                <td className="border p-2">{event.description}</td>
-                <td className="border p-2">
-                  {event.isJoined ? (
-                    <button
-                      className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                      onClick={() => handleLeaveEvent(event.id)}
-                    >
-                      Leave Event
-                    </button>
-                  ) : (
-                    <button
-                      className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
-                      onClick={() => handleJoinEvent(event.id)}
-                    >
-                      Join Event
-                    </button>
-                  )}
-                </td>
+    <div className="flex">
+      <ProfileSidebar />
+      <div className="flex-1 p-6 min-h-screen bg-gray-100">
+        <h2 className="text-2xl font-bold text-center mb-6">Available Events</h2>
+        {success && (
+          <p className="text-green-500 text-center mb-4">{success}</p>
+        )}
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse border border-gray-300 bg-white shadow-lg rounded-lg">
+            <thead className="bg-green-600 text-white">
+              <tr>
+                <th className="border p-2">Event Name</th>
+                <th className="border p-2">Date</th>
+                <th className="border p-2">Time</th>
+                <th className="border p-2">Description</th>
+                <th className="border p-2">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {events.map((event) => (
+                <tr key={event.id} className="border text-center">
+                  <td className="border p-2">{event.place}</td>
+                  <td className="border p-2">{event.date}</td>
+                  <td className="border p-2">{event.time}</td>
+                  <td className="border p-2">{event.description}</td>
+                  <td className="border p-2">
+                    {event.isJoined ? (
+                      <button
+                        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                        onClick={() => handleLeaveEvent(event.id)}
+                      >
+                        Leave Event
+                      </button>
+                    ) : (
+                      <button
+                        className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
+                        onClick={() => handleJoinEvent(event.id)}
+                      >
+                        Join Event
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
