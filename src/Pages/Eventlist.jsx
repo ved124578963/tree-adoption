@@ -59,32 +59,34 @@ const EventList = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex mt-15">
       <ProfileSidebar />
-      <div className="flex-1 p-6 min-h-screen bg-gray-100">
-        <h2 className="text-2xl font-bold text-center mb-6">Available Events</h2>
+      <div className="flex-1 p-8 min-h-screen bg-green-100 flex flex-col items-center">
+        <h2 className="text-3xl font-extrabold text-gray-800 mb-8">
+          Available Events
+        </h2>
         {success && (
           <p className="text-green-500 text-center mb-4">{success}</p>
         )}
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse border border-gray-300 bg-white shadow-lg rounded-lg">
-            <thead className="bg-green-600 text-white">
+        <div className="overflow-x-auto w-full max-w-4xl bg-white rounded-lg shadow-lg">
+          <table className="w-full border-collapse text-gray-700">
+            <thead className="bg-green-700 text-white text-lg">
               <tr>
-                <th className="border p-2">Event Name</th>
-                <th className="border p-2">Date</th>
-                <th className="border p-2">Time</th>
-                <th className="border p-2">Description</th>
-                <th className="border p-2">Actions</th>
+                <th className="p-4">Event Name</th>
+                <th className="p-4">Date</th>
+                <th className="p-4">Time</th>
+                <th className="p-4">Description</th>
+                <th className="p-4">Actions</th>
               </tr>
             </thead>
             <tbody>
               {events.map((event) => (
-                <tr key={event.id} className="border text-center">
-                  <td className="border p-2">{event.place}</td>
-                  <td className="border p-2">{event.date}</td>
-                  <td className="border p-2">{event.time}</td>
-                  <td className="border p-2">{event.description}</td>
-                  <td className="border p-2">
+                <tr key={event.id} className="bg-white hover:bg-gray-200">
+                  <td className="p-4 text-center">{event.place}</td>
+                  <td className="p-4 text-center">{event.date}</td>
+                  <td className="p-4 text-center">{event.time}</td>
+                  <td className="p-4 text-center">{event.description}</td>
+                  <td className="p-4 text-center">
                     {event.isJoined ? (
                       <button
                         className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"

@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Mytrees from "../Pages/Mytrees";
-import Request from "../Pages/Request";
 import ProfileSidebar from "./ProfileSidebar";
 
-const user = JSON.parse(localStorage.getItem("user"));
 const ProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isEditingPassword, setIsEditingPassword] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
@@ -20,15 +18,15 @@ const ProfilePage = () => {
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
-    console.log(storedUser);
     if (storedUser) {
       setUser(storedUser);
       setFirstName(storedUser.firstName);
       setLastName(storedUser.lastName);
+      setEmail(storedUser.email);
       setUsername(storedUser.username);
       setProfileImg(storedUser.profileImg);
       setLoading(false);
-     }
+    }
   }, []);
 
   if (loading) {
@@ -47,15 +45,19 @@ const ProfilePage = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:8080/treeowner/update/${user.id}`,
+        `https://treeplantadopt-springboot-production.up.railway.app/treeowner/update/${storedUser.id}`,
         {
           firstName,
           lastName,
           email,
         }
       );
-      console.log("Profile updated:");
+      console.log("Profile updated:", response.data);
       setIsEditing(false);
+      // Update local storage with new user data
+      const updatedUser = { ...user, firstName, lastName, email };
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      setUser(updatedUser);
     } catch (error) {
       console.error("Error updating profile:", error);
     }
@@ -69,9 +71,9 @@ const ProfilePage = () => {
     }
     try {
       const response = await axios.put(
-        `http://localhost:8080/treeowner/update-password`,
+        `https://treeplantadopt-springboot-production.up.railway.app/treeowner/update-password`,
         {
-          firstName,
+          username,
           oldPassword,
           newPassword,
         }
@@ -84,12 +86,14 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex flex-col md:flex-row">
       <ProfileSidebar />
-      <div className="flex-1 mx-auto p-4">
-        <h1 className="text-4xl font-bold text-center mb-8 text-green-700">Profile</h1>
+      <div className="flex-1 mx-auto p-4 mt-15 bg-green-100">
+        <h1 className="text-4xl font-bold text-center mb-8 text-green-700">
+          Profile
+        </h1>
 
-        <div className="bg-white p-8 rounded-lg  text-center">
+        <div className="bg-green-100 p-8 rounded-lg text-center">
           <div className="flex flex-col items-center">
             <img
               src={`https://treeplantadopt-springboot-production.up.railway.app/files/treeowners/images/${profileImg}`}
@@ -102,13 +106,19 @@ const ProfilePage = () => {
             <p className="text-gray-500 text-sm">@{username}</p>
 
             <div className="flex justify-center gap-8 mt-6">
-              <div className="bg-green-100 p-6 rounded-lg shadow-md w-40">
+              <div className="bg-green-300 p-6 rounded-lg shadow-md w-40">
                 <p className="text-lg font-bold text-green-600">Total Trees</p>
-                <p className="text-3xl font-semibold text-green-800">{user.totalTrees}</p>
+                <p className="text-3xl font-semibold text-green-800">
+                  {user.totalTrees}
+                </p>
               </div>
-              <div className="bg-green-100 p-6 rounded-lg shadow-md w-40">
-                <p className="text-lg font-bold text-green-600">Total Rewards</p>
-                <p className="text-3xl font-semibold text-green-800">{user.totalRewards}</p>
+              <div className="bg-green-300 p-6 rounded-lg shadow-md w-40">
+                <p className="text-lg font-bold text-green-600">
+                  Total Rewards
+                </p>
+                <p className="text-3xl font-semibold text-green-800">
+                  {user.totalRewards}
+                </p>
               </div>
             </div>
 
@@ -130,7 +140,10 @@ const ProfilePage = () => {
         </div>
 
         {isEditing && (
-          <form onSubmit={handleFormSubmit} className="mt-6 bg-white p-8 rounded-lg shadow-lg">
+          <form
+            onSubmit={handleFormSubmit}
+            className="mt-6 bg-white p-8 rounded-lg shadow-lg"
+          >
             <div className="mb-6">
               <label className="block text-green-600 mb-2" htmlFor="firstName">
                 First Name
@@ -155,6 +168,18 @@ const ProfilePage = () => {
                 className="w-full p-3 border border-gray-300 rounded-lg"
               />
             </div>
+            <div className="mb-6">
+              <label className="block text-green-600 mb-2" htmlFor="email">
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-lg"
+              />
+            </div>
             <button
               type="submit"
               className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition"
@@ -165,9 +190,15 @@ const ProfilePage = () => {
         )}
 
         {isEditingPassword && (
-          <form onSubmit={handlePasswordFormSubmit} className="mt-6 bg-white p-8 rounded-lg shadow-lg">
+          <form
+            onSubmit={handlePasswordFormSubmit}
+            className="mt-6 bg-white p-8 rounded-lg shadow-lg"
+          >
             <div className="mb-6">
-              <label className="block text-green-600 mb-2" htmlFor="oldPassword">
+              <label
+                className="block text-green-600 mb-2"
+                htmlFor="oldPassword"
+              >
                 Old Password
               </label>
               <input
@@ -179,7 +210,10 @@ const ProfilePage = () => {
               />
             </div>
             <div className="mb-6">
-              <label className="block text-green-600 mb-2" htmlFor="newPassword">
+              <label
+                className="block text-green-600 mb-2"
+                htmlFor="newPassword"
+              >
                 New Password
               </label>
               <input
@@ -191,7 +225,10 @@ const ProfilePage = () => {
               />
             </div>
             <div className="mb-6">
-              <label className="block text-green-600 mb-2" htmlFor="confirmNewPassword">
+              <label
+                className="block text-green-600 mb-2"
+                htmlFor="confirmNewPassword"
+              >
                 Confirm New Password
               </label>
               <input

@@ -8,15 +8,20 @@ const Treemanagement = () => {
   const [searchResult, setSearchResult] = useState(null);
 
   useEffect(() => {
-    axios.get("https://treeplantadopt-springboot-production.up.railway.app/trees/gettrees")
-      .then(response => setTrees(response.data))
-      .catch(error => console.error("Error fetching trees:", error));
+    axios
+      .get(
+        "https://treeplantadopt-springboot-production.up.railway.app/trees/gettrees"
+      )
+      .then((response) => setTrees(response.data))
+      .catch((error) => console.error("Error fetching trees:", error));
   }, []);
 
   const handleDelete = async (treeId) => {
     try {
-      await axios.delete(`https://treeplantadopt-springboot-production.up.railway.app/trees/${treeId}`);
-      setTrees(trees.filter(tree => tree.id !== treeId));
+      await axios.delete(
+        `https://treeplantadopt-springboot-production.up.railway.app/trees/${treeId}`
+      );
+      setTrees(trees.filter((tree) => tree.id !== treeId));
     } catch (error) {
       console.error("Error deleting tree:", error);
     }
@@ -29,7 +34,9 @@ const Treemanagement = () => {
     }
 
     try {
-      const response = await axios.get(`https://treeplantadopt-springboot-production.up.railway.app/trees/${search}`);
+      const response = await axios.get(
+        `https://treeplantadopt-springboot-production.up.railway.app/trees/${search}`
+      );
       setSearchResult(response.data);
     } catch (error) {
       console.error("Error searching tree:", error);
@@ -38,12 +45,14 @@ const Treemanagement = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen mt-15 bg-green-100">
       <AdminSidebar />
-      <div className="flex-1 p-6">
-        <h1 className="text-2xl font-bold mb-4">Tree Management</h1>
-        
-        <div className="flex mb-4">
+      <div className="flex-1 p-8 flex flex-col items-center">
+        <h1 className="text-3xl font-extrabold text-gray-800 mb-8">
+          Tree Management
+        </h1>
+
+        <div className="flex mb-4 w-full max-w-4xl">
           <input
             type="text"
             placeholder="Search tree by ID..."
@@ -59,50 +68,62 @@ const Treemanagement = () => {
           </button>
         </div>
 
-        <table className="w-full border-collapse border border-gray-300">
-          <thead>
-            <tr className="bg-gray-200">
-              <th className="border p-2">ID</th>
-              <th className="border p-2">Name</th>
-              <th className="border p-2">Tree Type</th>
-              <th className="border p-2">Registered Date</th>
-              <th className="border p-2">Longitude</th>
-              <th className="border p-2">Latitude</th>
-              <th className="border p-2">Rewards</th>
-              <th className="border p-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {searchResult ? (
-              <tr key={searchResult.id} className="border">
-                <td className="border p-2">{searchResult.id}</td>
-                <td className="border p-2">{searchResult.name}</td>
-                <td className="border p-2">{searchResult.type}</td>
-                <td className="border p-2">{searchResult.registeredDate}</td>
-                <td className="border p-2">{searchResult.longitude}</td>
-                <td className="border p-2">{searchResult.latitude}</td>
-                <td className="border p-2">{searchResult.rewards}</td>
-                <td className="border p-2">
-                  <button
-                    onClick={() => handleDelete(searchResult.id)}
-                    className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
-                  >
-                    Delete
-                  </button>
-                </td>
+        <div className="overflow-x-auto w-full max-w-4xl bg-white rounded-lg shadow-lg">
+          <table className="w-full border-collapse text-gray-700">
+            <thead className="bg-green-700 text-white text-lg">
+              <tr>
+                <th className="p-4">ID</th>
+                <th className="p-4">Name</th>
+                <th className="p-4">Tree Type</th>
+                <th className="p-4">Registered Date</th>
+                <th className="p-4">Longitude</th>
+                <th className="p-4">Latitude</th>
+                <th className="p-4">Rewards</th>
+                <th className="p-4">Actions</th>
               </tr>
-            ) : (
-              trees.filter(tree => tree.name.toLowerCase().includes(search.toLowerCase()))
-                .map(tree => (
-                  <tr key={tree.id} className="border">
-                    <td className="border p-2">{tree.id}</td>
-                    <td className="border p-2">{tree.name}</td>
-                    <td className="border p-2">{tree.type}</td>
-                    <td className="border p-2">{tree.registeredDate}</td>
-                    <td className="border p-2">{tree.longitude}</td>
-                    <td className="border p-2">{tree.latitude}</td>
-                    <td className="border p-2">{tree.rewards}</td>
-                    <td className="border p-2">
+            </thead>
+            <tbody>
+              {searchResult ? (
+                <tr
+                  key={searchResult.id}
+                  className="bg-white hover:bg-gray-200"
+                >
+                  <td className="p-4 text-center">{searchResult.id}</td>
+                  <td className="p-4 text-center">{searchResult.name}</td>
+                  <td className="p-4 text-center">{searchResult.type}</td>
+                  <td className="p-4 text-center">
+                    {searchResult.registeredDate}
+                  </td>
+                  <td className="p-4 text-center">{searchResult.longitude}</td>
+                  <td className="p-4 text-center">{searchResult.latitude}</td>
+                  <td className="p-4 text-center">{searchResult.rewards}</td>
+                  <td className="p-4 text-center">
+                    <button
+                      onClick={() => handleDelete(searchResult.id)}
+                      className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ) : (
+                trees.map((tree, index) => (
+                  <tr
+                    key={tree.id}
+                    className={
+                      index % 2 === 0
+                        ? "bg-gray-100 hover:bg-gray-200"
+                        : "bg-white hover:bg-gray-200"
+                    }
+                  >
+                    <td className="p-4 text-center">{tree.id}</td>
+                    <td className="p-4 text-center">{tree.name}</td>
+                    <td className="p-4 text-center">{tree.type}</td>
+                    <td className="p-4 text-center">{tree.registeredDate}</td>
+                    <td className="p-4 text-center">{tree.longitude}</td>
+                    <td className="p-4 text-center">{tree.latitude}</td>
+                    <td className="p-4 text-center">{tree.rewards}</td>
+                    <td className="p-4 text-center">
                       <button
                         onClick={() => handleDelete(tree.id)}
                         className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
@@ -112,9 +133,10 @@ const Treemanagement = () => {
                     </td>
                   </tr>
                 ))
-            )}
-          </tbody>
-        </table>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

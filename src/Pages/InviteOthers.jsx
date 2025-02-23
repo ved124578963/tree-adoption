@@ -43,12 +43,16 @@ const InviteOthers = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex mt-15">
       <ProfileSidebar />
       <div className="flex-1 p-6 min-h-screen bg-gray-100">
         <div className="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
-          <h2 className="text-2xl font-bold text-green-700 mb-4">Invite Others</h2>
-          {message && <p className="text-center mb-4 text-green-600">{message}</p>}
+          <h2 className="text-2xl font-bold text-green-700 mb-4">
+            Invite Others
+          </h2>
+          {message && (
+            <p className="text-center mb-4 text-green-600">{message}</p>
+          )}
 
           <form onSubmit={handleInvite} className="flex flex-col gap-4">
             <div>

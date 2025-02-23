@@ -17,7 +17,7 @@ const WhatsAppMessages = () => {
     setLoading(true);
     setError("");
     setSuccess("");
-    
+
     try {
       const response = await axios.post(
         "https://treeplantadopt-springboot-production.up.railway.app/admin/send-whatsapp",
@@ -38,7 +38,7 @@ const WhatsAppMessages = () => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen mt-15">
       <AdminSidebar />
       <div className="flex-1 p-6 bg-gray-100 flex flex-col items-center">
         <h1 className="text-2xl font-bold mb-6">Send WhatsApp Message</h1>

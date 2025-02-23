@@ -6,8 +6,8 @@ const EventManagement = () => {
   const [events, setEvents] = useState([]);
   const [formData, setFormData] = useState({
     place: "",
-    localDate: "", 
-    localTime: "", 
+    localDate: "",
+    localTime: "",
     description: "",
   });
   const [loading, setLoading] = useState(false);
@@ -64,7 +64,12 @@ const EventManagement = () => {
 
       if (response.status === 200) {
         setSuccess("Event created successfully!");
-        setFormData({ place: "", localDate: "", localTime: "", description: "" });
+        setFormData({
+          place: "",
+          localDate: "",
+          localTime: "",
+          description: "",
+        });
         fetchEvents();
       } else {
         setError("Failed to create event.");
@@ -93,11 +98,13 @@ const EventManagement = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex mt-15">
       <AdminSidebar />
 
       <div className="flex-1 p-6 bg-gray-100 min-h-screen">
-        <h1 className="text-3xl font-bold text-green-700 mb-6">Event Management</h1>
+        <h1 className="text-3xl font-bold text-green-700 mb-6">
+          Event Management
+        </h1>
 
         <div className="bg-white p-6 rounded-lg shadow-md mb-6 max-w-md mx-auto">
           <h2 className="text-xl font-semibold mb-4">Create New Event</h2>
@@ -129,7 +136,7 @@ const EventManagement = () => {
                 required
               />
             </div>
-            
+
             <div className="mb-4">
               <label className="block text-gray-700">Time (HH:MM:SS)</label>
               <input
@@ -141,7 +148,7 @@ const EventManagement = () => {
                 required
               />
             </div>
-            
+
             <div className="mb-4">
               <label className="block text-gray-700">Description</label>
               <textarea
@@ -173,12 +180,18 @@ const EventManagement = () => {
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {events.map((event) => (
                 <li key={event.id} className="mb-4">
-                  <div className="p-4 border rounded-md h-55"> {/* Fixed height for cards */}
+                  <div className="p-4 border rounded-md h-55">
+                    {" "}
+                    {/* Fixed height for cards */}
                     <h3 className="text-lg font-semibold">{event.place}</h3>
                     <p className="text-gray-700">Date: {event.date}</p>
                     <p className="text-gray-700">Time: {event.time}</p>
-                    <p className="text-gray-700">Description: {event.description}</p>
-                    <p className="text-gray-700">Participants: {event.participants.length}</p>
+                    <p className="text-gray-700">
+                      Description: {event.description}
+                    </p>
+                    <p className="text-gray-700">
+                      Participants: {event.participants.length}
+                    </p>
                     <button
                       onClick={() => handleDeleteEvent(event.id)}
                       className="mt-2 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition"

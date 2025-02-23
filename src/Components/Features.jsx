@@ -1,43 +1,61 @@
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
+
 const Features = () => {
-    const features = [
-      {
-        title: "Adopt a Tree 🌱",
-        description: "Choose a tree and take responsibility for its growth and well-being.",
-      },
-      {
-        title: "Track Growth 📸",
-        description: "Upload progress photos weekly and monitor the tree’s development over time.",
-      },
-      {
-        title: "Earn Rewards 🎉",
-        description: "Get rewarded for consistently updating and taking care of your tree.",
-      },
-      {
-        title: "Community & Challenges 🌍",
-        description: "Join challenges, connect with others, and compete for the ‘Best Grown Tree’ award.",
-      },
-    ];
-  
-    return (
-      <section className="bg-white py-16 text-center">
-        <div className="max-w-5xl mx-auto px-6">
-          <h2 className="text-3xl font-bold text-green-700">Why Join Us?</h2>
-          <p className="text-gray-600 mt-2">
-            Our platform makes tree adoption fun, rewarding, and impactful.
-          </p>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-            {features.map((feature, index) => (
-              <div key={index} className="p-6 bg-green-100 rounded-lg shadow-md">
-                <h3 className="text-xl font-semibold text-green-800">{feature.title}</h3>
-                <p className="text-gray-700 mt-2">{feature.description}</p>
-              </div>
-            ))}
+  const featureList = [
+    {
+      title: "Adopt a tree",
+      description:
+        "Choose a tree and take its responsibility for growth and well-being",
+    },
+    {
+      title: "Track Growth",
+      description:
+        "Upload progres photos weekly and monitor trees development over time",
+    },
+    {
+      title: "Earn Rewards",
+      description:
+        "Get rewarder for constantly updating and taking care of your tree",
+    },
+    {
+      title: "Ecofriendly Community",
+      description: "Connect with others, and compete for the Best Grown Tree",
+    },
+    {
+      title: "AI Assistant",
+      description:
+        "AI Assistant that solve queries about plants and environment",
+    },
+    {
+      title: "Notification and Reminders",
+      description:
+        "Reminders for watering plant daily and Notification about Events",
+    },
+  ];
+
+  return (
+    <section className="py-16 bg-gray-100 text-center">
+      <h2 className="text-3xl font-bold text-gray-800 mb-8">
+        The Ultimate Value
+      </h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto px-6">
+        {featureList.map((feature, index) => (
+          <div key={index} className="bg-white p-6 shadow-lg rounded-lg">
+            <div className="text-green-600 text-4xl mb-4">🌿</div>
+            <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+            <p className="text-gray-600">{feature.description}</p>
           </div>
-        </div>
-      </section>
-    );
-  };
-  
-  export default Features;
-  
+        ))}
+      </div>
+    </section>
+  );
+};
+
+export default function App() {
+  return (
+    <div>
+      <Features />
+    </div>
+  );
+}

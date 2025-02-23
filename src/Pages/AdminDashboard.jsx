@@ -7,17 +7,25 @@ const AdminDashboard = () => {
   const [totalTreesAdopted, setTotalTreesAdopted] = useState(0);
 
   useEffect(() => {
-    axios.get("https://treeplantadopt-springboot-production.up.railway.app/treeowners-count")
-      .then(response => setTotalUsers(response.data))
-      .catch(error => console.error("Error fetching total users:", error));
+    axios
+      .get(
+        "https://treeplantadopt-springboot-production.up.railway.app/treeowners-count"
+      )
+      .then((response) => setTotalUsers(response.data))
+      .catch((error) => console.error("Error fetching total users:", error));
 
-    axios.get("https://treeplantadopt-springboot-production.up.railway.app/trees-count")
-      .then(response => setTotalTreesAdopted(response.data))
-      .catch(error => console.error("Error fetching total trees adopted:", error));
+    axios
+      .get(
+        "https://treeplantadopt-springboot-production.up.railway.app/trees-count"
+      )
+      .then((response) => setTotalTreesAdopted(response.data))
+      .catch((error) =>
+        console.error("Error fetching total trees adopted:", error)
+      );
   }, []);
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen mt-15">
       <AdminSidebar />
       <div className="flex-1 p-6 bg-gray-100">
         <h1 className="text-3xl font-bold text-gray-800">Admin Dashboard</h1>
@@ -30,7 +38,9 @@ const AdminDashboard = () => {
 
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-lg font-semibold">Total Trees Adopted</h2>
-            <p className="text-2xl font-bold text-green-600">{totalTreesAdopted}</p>
+            <p className="text-2xl font-bold text-green-600">
+              {totalTreesAdopted}
+            </p>
           </div>
 
           <div className="bg-white p-6 rounded-lg shadow-md">

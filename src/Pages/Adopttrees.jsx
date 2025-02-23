@@ -19,7 +19,9 @@ const Adopttrees = () => {
 
   const fetchTreeData = async () => {
     try {
-      const response = await axios.get("https://treeplantadopt-springboot-production.up.railway.app/donations/all");
+      const response = await axios.get(
+        "https://treeplantadopt-springboot-production.up.railway.app/donations/all"
+      );
       setTrees(response.data);
     } catch (error) {
       console.error("Error fetching trees:", error);
@@ -72,7 +74,9 @@ const Adopttrees = () => {
 
   const handleDelete = async (treeId) => {
     try {
-      const response = await axios.delete(`https://treeplantadopt-springboot-production.up.railway.app/donations/delete/${treeId}`);
+      const response = await axios.delete(
+        `https://treeplantadopt-springboot-production.up.railway.app/donations/delete/${treeId}`
+      );
       if (response.status === 200) {
         setMessage("Donation deleted successfully!");
         // Remove the deleted tree from the state
@@ -101,80 +105,97 @@ const Adopttrees = () => {
   }
 
   return (
-    <div className="p-6 min-h-screen bg-gray-100">
-      <h1 className="text-2xl font-bold text-center mb-6">Adopt a Tree</h1>
+    <div className="bg-green-100 mt-15 min-h-screen py-8">
+      <div className="container mx-auto px-4">
+        <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">
+          Adopt a Tree
+        </h1>
 
-      {/* Display Tree Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {trees.map((tree) => (
-          <div key={tree.id} className="relative bg-white p-4 rounded-lg shadow-md text-center transition-transform transform hover:scale-105 hover:shadow-lg">
-            <div className="relative group">
-              <img
-                src={`https://treeplantadopt-springboot-production.up.railway.app/files/donatetreeimg/images/${tree.imagePath}`}
-                alt={tree.species}
-                className="w-full h-64 object-cover rounded-md bg-gray-200"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-50 text-white flex flex-col items-center justify-center opacity-0 group-hover:opacity-70 transition-opacity">
-                <p className="text-lg font-semibold">{tree.species}</p>
-                <p className="text-sm">Quantity: {tree.quantity}</p>
-                <p className="text-sm">Available: {tree.available ? "Yes" : "No"}</p>
+        {/* Display Tree Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {trees.map((tree) => (
+            <div
+              key={tree.id}
+              className="bg-gray-200 rounded-lg shadow-md overflow-hidden transition-transform transform hover:scale-105 hover:shadow-lg"
+            >
+              <div className="relative p-4">
+                <img
+                  src={`https://treeplantadopt-springboot-production.up.railway.app/files/donatetreeimg/images/${tree.imagePath}`}
+                  alt={tree.species}
+                  className="w-full h-64 object-contain bg-white p-2 rounded"
+                />
+                <div className="absolute inset-0 bg-black bg-opacity-50 text-white flex flex-col items-center justify-center opacity-0 hover:opacity-60 transition-opacity duration-300">
+                  <p className="text-lg font-semibold">{tree.species}</p>
+                  <p className="text-sm">Quantity: {tree.quantity}</p>
+                  <p className="text-sm">
+                    Available: {tree.available ? "Yes" : "No"}
+                  </p>
+                </div>
+              </div>
+              <div className="p-4">
+                <button
+                  onClick={() => handleAdopt(tree)}
+                  className="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                >
+                  Adopt Me
+                </button>
+                {user.id === tree.donor.id && (
+                  <button
+                    onClick={() => handleDelete(tree.id)}
+                    className="w-full mt-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  >
+                    Delete
+                  </button>
+                )}
               </div>
             </div>
-            <button
-              onClick={() => handleAdopt(tree)}
-              className="mt-3 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
-            >
-              Adopt Me
-            </button>
-            {user.id === tree.donor.id && (
-              <button
-                onClick={() => handleDelete(tree.id)}
-                className="mt-3 ml-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
-              >
-                Delete
-              </button>
-            )}
-          </div>
-        ))}
-      </div>
-
-      {/* Adoption Form */}
-      {selectedTree && (
-        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h2 className="text-xl font-bold mb-4">Adopt {selectedTree.species}</h2>
-
-            {message && <p className="text-center text-green-600">{message}</p>}
-
-            <label className="block text-gray-700">Requested Quantity:</label>
-            <input
-              type="number"
-              className="w-full px-3 py-2 border rounded-md mb-4"
-              placeholder="Enter quantity"
-              min="1"
-              max={selectedTree.quantity}
-              value={requestedQuantity}
-              onChange={(e) => setRequestedQuantity(e.target.value)}
-              required
-            />
-
-            <button
-              onClick={handleConfirmAdoption}
-              className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
-              disabled={loading}
-            >
-              {loading ? "Processing..." : "Confirm Adoption"}
-            </button>
-
-            <button
-              onClick={() => setSelectedTree(null)}
-              className="w-full mt-2 bg-gray-400 text-white py-2 rounded-md hover:bg-gray-500"
-            >
-              Cancel
-            </button>
-          </div>
+          ))}
         </div>
-      )}
+
+        {/* Adoption Form */}
+        {selectedTree && (
+          <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+              <h2 className="text-xl font-bold mb-4">
+                Adopt {selectedTree.species}
+              </h2>
+
+              {message && (
+                <p className="text-center text-green-600">{message}</p>
+              )}
+
+              <label className="block text-gray-700 text-sm font-bold mb-2">
+                Requested Quantity:
+              </label>
+              <input
+                type="number"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                placeholder="Enter quantity"
+                min="1"
+                max={selectedTree.quantity}
+                value={requestedQuantity}
+                onChange={(e) => setRequestedQuantity(e.target.value)}
+                required
+              />
+
+              <button
+                onClick={handleConfirmAdoption}
+                className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                disabled={loading}
+              >
+                {loading ? "Processing..." : "Confirm Adoption"}
+              </button>
+
+              <button
+                onClick={() => setSelectedTree(null)}
+                className="w-full mt-2 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

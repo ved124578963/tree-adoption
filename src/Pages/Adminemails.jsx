@@ -13,9 +13,10 @@ const EmailManagement = () => {
   };
 
   const handleSendEmail = async (emailType) => {
-    const apiUrl = emailType === "plain" 
-      ? "https://treeplantadopt-springboot-production.up.railway.app/admin/send-plainemails "
-      : "https://treeplantadopt-springboot-production.up.railway.app/admin/send-htmlemails";
+    const apiUrl =
+      emailType === "plain"
+        ? "https://treeplantadopt-springboot-production.up.railway.app/admin/send-plainemails "
+        : "https://treeplantadopt-springboot-production.up.railway.app/admin/send-htmlemails";
 
     try {
       await axios.post(apiUrl, {
@@ -30,11 +31,13 @@ const EmailManagement = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen mt-15 bg-gray-100">
       <AdminSidebar />
       <div className="flex-1 flex items-center justify-center p-10">
         <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-lg">
-          <h2 className="text-2xl font-bold text-center mb-4">Email Management</h2>
+          <h2 className="text-2xl font-bold text-center mb-4">
+            Email Management
+          </h2>
 
           <form>
             <div className="mb-4">

@@ -32,7 +32,9 @@ const Registertree = () => {
     const { name, value } = e.target;
     setFormData((prevData) => {
       const updatedData = { ...prevData, [name]: value };
-      setIsPhotoButtonEnabled(updatedData.name.trim() !== "" && updatedData.type.trim() !== "");
+      setIsPhotoButtonEnabled(
+        updatedData.name.trim() !== "" && updatedData.type.trim() !== ""
+      );
       return updatedData;
     });
   };
@@ -49,7 +51,9 @@ const Registertree = () => {
         },
         (error) => {
           console.error("Error fetching location: ", error);
-          alert("Unable to retrieve location. Please enable location services.");
+          alert(
+            "Unable to retrieve location. Please enable location services."
+          );
         },
         {
           enableHighAccuracy: true,
@@ -73,27 +77,31 @@ const Registertree = () => {
 
   const handlePhotoCapture = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { exact: "environment" } } });
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { exact: "environment" } },
+      });
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         videoRef.current.play();
       }
-
-      setTimeout(() => {
-        if (canvasRef.current && videoRef.current) {
-          const context = canvasRef.current.getContext("2d");
-          context.drawImage(videoRef.current, 0, 0, 300, 200);
-          canvasRef.current.toBlob((blob) => {
-            setPhoto(blob);
-          }, "image/png");
-          stream.getTracks().forEach((track) => track.stop());
-          alert("Photo captured successfully! Now fetching location...");
-          getLocationAfterPhoto();
-        }
-      }, 2000);
     } catch (error) {
       alert("Camera access denied or not available.");
       console.error("Camera access error:", error);
+    }
+  };
+
+  const capturePhoto = () => {
+    if (canvasRef.current && videoRef.current) {
+      const context = canvasRef.current.getContext("2d");
+      context.drawImage(videoRef.current, 0, 0, 300, 200);
+      canvasRef.current.toBlob((blob) => {
+        setPhoto(blob);
+      }, "image/png");
+      const stream = videoRef.current.srcObject;
+      const tracks = stream.getTracks();
+      tracks.forEach((track) => track.stop());
+      alert("Photo captured successfully! Now fetching location...");
+      getLocationAfterPhoto();
     }
   };
 
@@ -102,7 +110,13 @@ const Registertree = () => {
     setError("");
     setSuccess("");
 
-    if (!formData.name || !formData.type || !formData.longitude || !formData.latitude || !photo) {
+    if (
+      !formData.name ||
+      !formData.type ||
+      !formData.longitude ||
+      !formData.latitude ||
+      !photo
+    ) {
       setError("Please complete all fields before submitting.");
       return;
     }
@@ -129,14 +143,24 @@ const Registertree = () => {
     formDataWithImage.append("image", photo, "tree_image.png");
 
     try {
-      const response = await axios.post("https://treeplantadopt-springboot-production.up.railway.app/trees/registertree", formDataWithImage, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const response = await axios.post(
+        "https://treeplantadopt-springboot-production.up.railway.app/trees/registertree",
+        formDataWithImage,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
       if (response.status !== 200) {
         throw new Error("Failed to register tree.");
       }
       setSuccess("Tree registered successfully!");
-      setFormData({ name: "", type: "", longitude: "", latitude: "", treeOwner: { id: "" } });
+      setFormData({
+        name: "",
+        type: "",
+        longitude: "",
+        latitude: "",
+        treeOwner: { id: "" },
+      });
       setPhoto(null);
     } catch (error) {
       console.error("Error:", error);
@@ -145,48 +169,113 @@ const Registertree = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-md w-96">
-        <h2 className="text-2xl font-bold text-center mb-4">Register a New Tree</h2>
-        {error && <p className="text-red-500 text-center">{error}</p>}
-        {success && <p className="text-green-500 text-center">{success}</p>}
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-gray-700">Tree Name</label>
-            <input type="text" name="name" className="w-full px-3 py-2 border rounded-md" placeholder="Enter tree name" value={formData.name} onChange={handleChange} required />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700">Tree Type</label>
-            <input type="text" name="type" className="w-full px-3 py-2 border rounded-md" placeholder="Enter tree type" value={formData.type} onChange={handleChange} required />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700">Select Photo</label>
-            <input type="file" accept="image/*" className="w-full px-3 py-2 border rounded-md" onChange={handlePhotoSelection} disabled={!isPhotoButtonEnabled} />
-          </div>
-          <button type="button" className={`w-full flex items-center justify-center gap-2 py-2 rounded mb-3 text-white ${isPhotoButtonEnabled ? "bg-green-500 hover:bg-green-600" : "bg-gray-300 cursor-not-allowed"}`} onClick={handlePhotoCapture} disabled={!isPhotoButtonEnabled}>
-            <Camera size={18} />
-            Capture Photo
-          </button>
-          <div className="mb-4">
-            <label className="block text-gray-700">Longitude</label>
-            <input type="text" name="longitude" className="w-full px-3 py-2 border rounded-md" placeholder="" value={formData.longitude} readOnly />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700">Latitude</label>
-            <input type="text" name="latitude" className="w-full px-3 py-2 border rounded-md" placeholder="" value={formData.latitude} readOnly />
-          </div>
-          <video ref={videoRef} style={{ display: "none" }} />
-          {photo && (
-            <div className="mb-3">
-              <p className="text-center text-sm text-gray-600">Captured Photo:</p>
-              <img src={URL.createObjectURL(photo)} alt="Captured" className="w-full rounded-md border" />
+    <section className="py-16 bg-green-100">
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="bg-white p-6 rounded-lg shadow-md w-96">
+          <h2 className="text-2xl font-bold text-center mb-4">
+            Register a New Tree
+          </h2>
+          {error && <p className="text-red-500 text-center">{error}</p>}
+          {success && <p className="text-green-500 text-center">{success}</p>}
+          <form onSubmit={handleSubmit}>
+            <div className="mb-4">
+              <label className="block text-gray-700">Tree Name</label>
+              <input
+                type="text"
+                name="name"
+                className="w-full px-3 py-2 border rounded-md"
+                placeholder="Enter tree name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
             </div>
-          )}
-          <canvas ref={canvasRef} width="300" height="200" style={{ display: "none" }}></canvas>
-          <button type="submit" className="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 transition">Register Tree</button>
-        </form>
+            <div className="mb-4">
+              <label className="block text-gray-700">Tree Type</label>
+              <input
+                type="text"
+                name="type"
+                className="w-full px-3 py-2 border rounded-md"
+                placeholder="Enter tree type"
+                value={formData.type}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700">Select Photo</label>
+              <input
+                type="file"
+                accept="image/*"
+                className="w-full px-3 py-2 border rounded-md"
+                onChange={handlePhotoSelection}
+                disabled={!isPhotoButtonEnabled}
+              />
+            </div>
+            <button
+              type="button"
+              className={`w-full flex items-center justify-center gap-2 py-2 rounded mb-3 text-white ${
+                isPhotoButtonEnabled
+                  ? "bg-green-500 hover:bg-green-600"
+                  : "bg-gray-300 cursor-not-allowed"
+              }`}
+              onClick={handlePhotoCapture}
+              disabled={!isPhotoButtonEnabled}
+            >
+              <Camera size={18} />
+              Open Camera
+            </button>
+
+            <div className="mb-4">
+              <label className="block text-gray-700">Longitude</label>
+              <input
+                type="text"
+                name="longitude"
+                className="w-full px-3 py-2 border rounded-md"
+                placeholder=""
+                value={formData.longitude}
+                readOnly
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700">Latitude</label>
+              <input
+                type="text"
+                name="latitude"
+                className="w-full px-3 py-2 border rounded-md"
+                placeholder=""
+                value={formData.latitude}
+                readOnly
+              />
+            </div>
+            {photo && (
+              <div className="mb-3 mt-0">
+                <p className="text-center text-sm text-gray-600">
+                  Captured Photo:
+                </p>
+                <img
+                  src={URL.createObjectURL(photo)}
+                  alt="Captured"
+                  className="w-full rounded-md border"
+                />
+              </div>
+            )}
+            <canvas
+              ref={canvasRef}
+              width="300"
+              height="200"
+              style={{ display: "none" }}
+            ></canvas>
+            <button
+              type="submit"
+              className="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 transition"
+            >
+              Register Tree
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 

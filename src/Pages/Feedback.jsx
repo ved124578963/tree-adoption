@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Feedback = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
     rating: "",
     improvements: "",
     issuesFaced: "",
@@ -20,17 +19,44 @@ const Feedback = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Feedback submitted:", formData);
-    alert("Thank you for your feedback!");
-    setIsOpen(false);
+    const feedbackData = {
+      treeOwner: {
+        id: user.id,
+      },
+      rating: formData.rating,
+      improvements: formData.improvements,
+      issues: formData.issuesFaced,
+      additionalComments: formData.additionalComments,
+      recommendation: formData.recommend === "yes",
+    };
+    console.log("Feedback data:", feedbackData);
+    try {
+      const response = await axios.post(
+        "https://treeplantadopt-springboot-production.up.railway.app/treeowner/feedback",
+        feedbackData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+          },
+        }
+      );
+      console.log("Feedback submitted:", response.data);
+      alert("Thank you for your feedback!");
+      setIsOpen(false);
+    } catch (error) {
+      console.error("Error submitting feedback:", error);
+      alert("Error submitting feedback. Please try again.");
+    }
   };
 
   if (!user) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <p className="text-red-500">You must be logged in to submit feedback.</p>
+        <p className="text-red-500">
+          You must be logged in to submit feedback.
+        </p>
         <button
           onClick={() => navigate("/login")}
           className="ml-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
@@ -82,7 +108,9 @@ const Feedback = () => {
             onChange={handleChange}
           ></textarea>
 
-          <label className="block mb-2">Would you recommend this platform?</label>
+          <label className="block mb-2">
+            Would you recommend this platform?
+          </label>
           <div className="flex gap-4 mb-4">
             <label>
               <input
