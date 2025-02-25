@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ProfileSidebar from "../Components/ProfileSidebar";
@@ -136,6 +136,7 @@ const MyTrees = () => {
   const [generatedContent, setGeneratedContent] = useState(null);
   const [showSubmitButton, setShowSubmitButton] = useState(false);
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
 
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -157,11 +158,10 @@ const MyTrees = () => {
           response.data.map(async (tree) => {
             treeid = tree.id;
             const locationResponse = await axios.get(
-              `https://maps.googleapis.com/maps/api/geocode/json?latlng=${tree.latitude},${tree.longitude}&key=AIzaSyDzrvm7-DGybAq-SrgB16XyB1V9z4jpHzE`
+              `https://nominatim.openstreetmap.org/reverse?lat=${tree.latitude}&lon=${tree.longitude}&format=json`
             );
             const location =
-              locationResponse.data.results[0]?.formatted_address ||
-              "Location not found";
+              locationResponse.data.display_name || "Location not found";
             return {
               ...tree,
               location,
@@ -217,6 +217,12 @@ const MyTrees = () => {
     }
   };
 
+  const handleCapturePhotoClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
   const handleUploadPhoto = async (tree) => {
     treeid = tree.id;
     console.log(treeid);
@@ -236,7 +242,7 @@ const MyTrees = () => {
           console.log(distance);
           if (distance <= 2000) {
             setSelectedTree(tree);
-            document.getElementById("fileInput").click();
+            handleCapturePhotoClick();
             setTimeout(() => {
               setShowSubmitButton(true);
             }, 7000);
@@ -384,7 +390,9 @@ const MyTrees = () => {
           type="file"
           id="fileInput"
           accept="image/*"
+          capture="environment"
           className="hidden"
+          ref={fileInputRef}
           onChange={handleFileSelection}
         />
         {showSubmitButton && (

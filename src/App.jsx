@@ -31,6 +31,7 @@ import ProgressPhotos from "./Pages/ProgressPhotos";
 import Adminfeedback from "./Pages/Adminfeedback";
 import Adoptionprocess from "./Components/Adoptionprocess";
 import FAQ from "./Components/FAQ";
+// import Certificate from "./Components/Certificate";
 
 function App() {
   const user = JSON.parse(localStorage.getItem("user")); // Get user from localStorage
@@ -78,6 +79,7 @@ function App() {
             <Route path="/Adminfeedback" element={<Adminfeedback />} />
             <Route path="/Adoptionprocess" element={<Adoptionprocess />} />
             <Route path="/FAQ" element={<FAQ />} />
+            {/* <Route path="/Certificate" element={<Certificate />} /> */}
           </Routes>
         </main>
         <ChatButton />

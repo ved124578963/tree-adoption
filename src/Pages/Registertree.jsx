@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from "react";
-import { Camera } from "lucide-react";
 import axios from "axios";
 
 const Registertree = () => {
@@ -15,8 +14,7 @@ const Registertree = () => {
   const [photo, setPhoto] = useState(null); // Store captured photo
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const videoRef = useRef(null);
-  const canvasRef = useRef(null);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -75,33 +73,9 @@ const Registertree = () => {
     }
   };
 
-  const handlePhotoCapture = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: { exact: "environment" } },
-      });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        videoRef.current.play();
-      }
-    } catch (error) {
-      alert("Camera access denied or not available.");
-      console.error("Camera access error:", error);
-    }
-  };
-
-  const capturePhoto = () => {
-    if (canvasRef.current && videoRef.current) {
-      const context = canvasRef.current.getContext("2d");
-      context.drawImage(videoRef.current, 0, 0, 300, 200);
-      canvasRef.current.toBlob((blob) => {
-        setPhoto(blob);
-      }, "image/png");
-      const stream = videoRef.current.srcObject;
-      const tracks = stream.getTracks();
-      tracks.forEach((track) => track.stop());
-      alert("Photo captured successfully! Now fetching location...");
-      getLocationAfterPhoto();
+  const handleCapturePhotoClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
     }
   };
 
@@ -203,29 +177,28 @@ const Registertree = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700">Select Photo</label>
+              <label className="block text-gray-700">Capture Photo</label>
               <input
                 type="file"
                 accept="image/*"
-                className="w-full px-3 py-2 border rounded-md"
+                capture="environment"
+                className="hidden"
+                ref={fileInputRef}
                 onChange={handlePhotoSelection}
-                disabled={!isPhotoButtonEnabled}
               />
+              <button
+                type="button"
+                className={`w-full flex items-center justify-center gap-2 py-2 rounded mb-3 text-white ${
+                  isPhotoButtonEnabled
+                    ? "bg-green-500 hover:bg-green-600"
+                    : "bg-gray-300 cursor-not-allowed"
+                }`}
+                onClick={handleCapturePhotoClick}
+                disabled={!isPhotoButtonEnabled}
+              >
+                Capture Photo
+              </button>
             </div>
-            <button
-              type="button"
-              className={`w-full flex items-center justify-center gap-2 py-2 rounded mb-3 text-white ${
-                isPhotoButtonEnabled
-                  ? "bg-green-500 hover:bg-green-600"
-                  : "bg-gray-300 cursor-not-allowed"
-              }`}
-              onClick={handlePhotoCapture}
-              disabled={!isPhotoButtonEnabled}
-            >
-              <Camera size={18} />
-              Open Camera
-            </button>
-
             <div className="mb-4">
               <label className="block text-gray-700">Longitude</label>
               <input
@@ -260,12 +233,6 @@ const Registertree = () => {
                 />
               </div>
             )}
-            <canvas
-              ref={canvasRef}
-              width="300"
-              height="200"
-              style={{ display: "none" }}
-            ></canvas>
             <button
               type="submit"
               className="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 transition"

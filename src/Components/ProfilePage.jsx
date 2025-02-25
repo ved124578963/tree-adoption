@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ProfileSidebar from "./ProfileSidebar";
+import { useNavigate } from "react-router-dom";
 
 const ProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -15,6 +16,8 @@ const ProfilePage = () => {
   const [profileImg, setProfileImg] = useState("");
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -45,7 +48,7 @@ const ProfilePage = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `https://treeplantadopt-springboot-production.up.railway.app/treeowner/update/${storedUser.id}`,
+        `https://treeplantadopt-springboot-production.up.railway.app/treeowner/update/${user.id}`,
         {
           firstName,
           lastName,
@@ -83,6 +86,11 @@ const ProfilePage = () => {
     } catch (error) {
       console.error("Error updating password:", error);
     }
+  };
+
+  const handleViewCertificatesClick = () => {
+    // Logic to view certificates
+    console.log("View Certificates button clicked");
   };
 
   return (
@@ -135,6 +143,12 @@ const ProfilePage = () => {
               >
                 {isEditingPassword ? "Cancel" : "Edit Password"}
               </button>
+              {/* <button
+                className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition"
+                // onClick={navigate("/Certificate")}
+              >
+                View Certificates
+              </button> */}
             </div>
           </div>
         </div>
